@@ -3,18 +3,18 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 
 const HomeScreen = () => {
-  const { authData, handleSignOut } = useAuth();
+  const { authToken, handleSignOut } = useAuth();
 
   return (
     <View style={styles.container}>
       <View style={styles.info}>
-        <Text>User ID: {authData.uid}</Text>
+        <Text>User ID: {authToken.uid}</Text>
         <Text>
-          Name: {authData.firstName}&nbsp;{authData.lastName}
+          Name: {authToken.firstName}&nbsp;{authToken.lastName}
         </Text>
-        <Text>Email: {authData.email}</Text>
-        <Text>Phone: {authData.phone}</Text>
-        <Text>User ID: {authData.uid}</Text>
+        <Text>Email: {authToken.email}</Text>
+        <Text>Phone: {authToken.phone}</Text>
+        <Text>User ID: {authToken.uid}</Text>
       </View>
       <TouchableOpacity style={styles.button} onPress={handleSignOut}>
         <Text style={styles.buttonText}>Sign Out</Text>
