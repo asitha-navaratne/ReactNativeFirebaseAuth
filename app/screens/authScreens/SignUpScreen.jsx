@@ -19,26 +19,29 @@ const SignUpScreen = () => {
     <View style={styles.container} behaviour="padding">
       <View style={styles.inputContainer}>
         <TextInput
-          placeholder="First Name"
+          label="First Name"
           value={user["firstName"]}
           onChangeText={(text) =>
             setUser((prev) => ({ ...prev, firstName: text }))
           }
+          mode="outlined"
         />
         <TextInput
-          placeholder="Last Name"
+          label="Last Name"
           value={user["lastName"]}
           onChangeText={(text) =>
             setUser((prev) => ({ ...prev, lastName: text }))
           }
+          mode="outlined"
         />
         <TextInput
-          placeholder="Email"
+          label="Email"
           value={user["email"]}
           onChangeText={(text) => setUser((prev) => ({ ...prev, email: text }))}
+          mode="outlined"
         />
         <TextInput
-          placeholder="Phone"
+          label="Phone"
           value={user["phone"]}
           keyboardType="phone-pad"
           maxLength={9}
@@ -47,11 +50,12 @@ const SignUpScreen = () => {
           left={<TextInput.Affix text="+94" />}
         />
         <TextInput
-          placeholder="Password"
+          label="Password"
           value={user["password"]}
           onChangeText={(text) =>
             setUser((prev) => ({ ...prev, password: text }))
           }
+          mode="outlined"
           secureTextEntry
         />
       </View>
