@@ -1,47 +1,51 @@
 import { useState } from "react";
-import {
-  KeyboardAvoidingView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Button, TextInput } from "react-native-paper";
 
 import { useAuth } from "../../contexts/AuthContext";
 
 const SignInScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const { handleSignIn } = useAuth();
 
+  const changeTextVisibility = function () {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
+    <View style={styles.container} behavior="padding">
       <View style={styles.inputContainer}>
         <TextInput
-          placeholder="Email"
+          label="Email"
           value={email}
           onChangeText={(text) => setEmail(text)}
-          style={styles.input}
+          style={styles.textInput}
+          mode="outlined"
         />
         <TextInput
-          placeholder="Password"
+          label="Password"
           value={password}
           onChangeText={(text) => setPassword(text)}
-          style={styles.input}
-          secureTextEntry
+          mode="outlined"
+          right={
+            <TextInput.Icon
+              icon={isPasswordVisible ? "eye" : "eye-off"}
+              onPress={changeTextVisibility}
+            />
+          }
+          style={styles.textInput}
+          secureTextEntry={!isPasswordVisible}
         />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={() => handleSignIn(email, password)}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
+        <Button onPress={() => handleSignIn(email, password)} mode="contained">
+          Login
+        </Button>
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 
@@ -54,29 +58,14 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: "80%",
   },
-  input: {
-    backgroundColor: "white",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginTop: 5,
+  textInput: {
+    marginTop: 10,
   },
   buttonContainer: {
     width: "60%",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 40,
-  },
-  button: {
-    backgroundColor: "#0782f9",
-    width: "100%",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
   },
 });
 

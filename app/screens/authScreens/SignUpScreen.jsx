@@ -12,8 +12,13 @@ const SignUpScreen = () => {
     phone: "",
     password: "",
   });
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const { handleSignUp } = useAuth();
+
+  const changeTextVisibility = function () {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   return (
     <View style={styles.container} behaviour="padding">
@@ -25,6 +30,7 @@ const SignUpScreen = () => {
             setUser((prev) => ({ ...prev, firstName: text }))
           }
           mode="outlined"
+          style={styles.textInput}
         />
         <TextInput
           label="Last Name"
@@ -33,12 +39,14 @@ const SignUpScreen = () => {
             setUser((prev) => ({ ...prev, lastName: text }))
           }
           mode="outlined"
+          style={styles.textInput}
         />
         <TextInput
           label="Email"
           value={user["email"]}
           onChangeText={(text) => setUser((prev) => ({ ...prev, email: text }))}
           mode="outlined"
+          style={styles.textInput}
         />
         <TextInput
           label="Phone"
@@ -48,6 +56,7 @@ const SignUpScreen = () => {
           onChangeText={(text) => setUser((prev) => ({ ...prev, phone: text }))}
           mode="outlined"
           left={<TextInput.Affix text="+94" />}
+          style={styles.textInput}
         />
         <TextInput
           label="Password"
@@ -56,7 +65,14 @@ const SignUpScreen = () => {
             setUser((prev) => ({ ...prev, password: text }))
           }
           mode="outlined"
-          secureTextEntry
+          right={
+            <TextInput.Icon
+              icon={isPasswordVisible ? "eye" : "eye-off"}
+              onPress={changeTextVisibility}
+            />
+          }
+          style={styles.textInput}
+          secureTextEntry={!isPasswordVisible}
         />
       </View>
       <View style={styles.buttonContainer}>
@@ -76,6 +92,9 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: "80%",
+  },
+  textInput: {
+    marginTop: 6,
   },
   buttonContainer: {
     width: "60%",
