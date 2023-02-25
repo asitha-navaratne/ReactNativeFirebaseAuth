@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Button, TextInput } from "react-native-paper";
+import { Button, Snackbar, TextInput } from "react-native-paper";
 
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -12,12 +12,39 @@ const SignUpScreen = () => {
     phone: "",
     password: "",
   });
+  const [checkPassword, setCheckPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isCheckPasswordVisible, setIsCheckPasswordVisible] = useState(false);
+  const [isErrorVisible, setIsErrorVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { handleSignUp } = useAuth();
 
-  const changeTextVisibility = function () {
-    setIsPasswordVisible(!isPasswordVisible);
+  const handleButtonClick = function () {
+    if (!(Object.keys(user).every((key) => user[key]) && checkPassword)) {
+      alertErrorMessage("Please fill in all fields!");
+      return;
+    }
+
+    if (checkPasswordsMatching()) {
+      handleSignUp(user);
+    } else {
+      alertErrorMessage("Passwords should match!");
+    }
+  };
+
+  const checkPasswordsMatching = function () {
+    return user["password"] === checkPassword;
+  };
+
+  const alertErrorMessage = function (message) {
+    setIsErrorVisible(true);
+    setErrorMessage(message);
+  };
+
+  const dismissErrorMessage = function () {
+    setIsErrorVisible(false);
+    setErrorMessage("");
   };
 
   return (
@@ -68,18 +95,42 @@ const SignUpScreen = () => {
           right={
             <TextInput.Icon
               icon={isPasswordVisible ? "eye" : "eye-off"}
-              onPress={changeTextVisibility}
+              onPress={() => setIsPasswordVisible(!isPasswordVisible)}
             />
           }
           style={styles.textInput}
           secureTextEntry={!isPasswordVisible}
         />
+        <TextInput
+          label="Re-enter Password"
+          value={checkPassword}
+          onChangeText={(text) => setCheckPassword(text)}
+          mode="outlined"
+          right={
+            <TextInput.Icon
+              icon={isCheckPasswordVisible ? "eye" : "eye-off"}
+              onPress={() => setIsCheckPasswordVisible(!isCheckPasswordVisible)}
+            />
+          }
+          style={styles.textInput}
+          secureTextEntry={!isCheckPasswordVisible}
+        />
       </View>
       <View style={styles.buttonContainer}>
-        <Button mode="contained" onPress={() => handleSignUp(user)}>
+        <Button mode="contained" onPress={handleButtonClick}>
           Register
         </Button>
       </View>
+      <Snackbar
+        visible={isErrorVisible}
+        onDismiss={dismissErrorMessage}
+        action={{
+          label: "OK",
+          onPress: dismissErrorMessage,
+        }}
+      >
+        {errorMessage}
+      </Snackbar>
     </View>
   );
 };

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Button, TextInput } from "react-native-paper";
+import { Button, Snackbar, TextInput } from "react-native-paper";
 
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -8,11 +8,31 @@ const SignInScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isErrorVisible, setIsErrorVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { handleSignIn } = useAuth();
 
+  const handleButtonClick = function () {
+    if (email === "" || password === "") {
+      alertErrorMessage("Please fill in all fields!");
+    } else {
+      handleSignIn(email, password);
+    }
+  };
+
   const changeTextVisibility = function () {
     setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  const alertErrorMessage = function (message) {
+    setIsErrorVisible(true);
+    setErrorMessage(message);
+  };
+
+  const dismissErrorMessage = function () {
+    setIsErrorVisible(false);
+    setErrorMessage("");
   };
 
   return (
@@ -41,10 +61,20 @@ const SignInScreen = () => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <Button onPress={() => handleSignIn(email, password)} mode="contained">
+        <Button onPress={handleButtonClick} mode="contained">
           Login
         </Button>
       </View>
+      <Snackbar
+        visible={isErrorVisible}
+        onDismiss={dismissErrorMessage}
+        action={{
+          label: "OK",
+          onPress: dismissErrorMessage,
+        }}
+      >
+        {errorMessage}
+      </Snackbar>
     </View>
   );
 };
