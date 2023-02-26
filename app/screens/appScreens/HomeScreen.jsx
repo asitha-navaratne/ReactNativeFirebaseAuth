@@ -1,4 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button } from "react-native-paper";
 
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -13,12 +14,14 @@ const HomeScreen = () => {
           Name: {authToken.firstName}&nbsp;{authToken.lastName}
         </Text>
         <Text>Email: {authToken.email}</Text>
-        <Text>Phone: {authToken.phone}</Text>
-        <Text>User ID: {authToken.uid}</Text>
+        <Text>Phone: +94{authToken.phone}</Text>
       </View>
-      <TouchableOpacity style={styles.button} onPress={handleSignOut}>
-        <Text style={styles.buttonText}>Sign Out</Text>
-      </TouchableOpacity>
+      <View></View>
+      <View style={styles.buttonContainer}>
+        <Button mode="contained" onPress={handleSignOut}>
+          Sign Out
+        </Button>
+      </View>
     </View>
   );
 };
@@ -35,17 +38,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 11,
   },
-  button: {
-    backgroundColor: "#0782f9",
+  buttonContainer: {
     width: "60%",
-    padding: 15,
-    borderRadius: 10,
+    justifyContent: "center",
     alignItems: "center",
     marginTop: 40,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
   },
 });
 
