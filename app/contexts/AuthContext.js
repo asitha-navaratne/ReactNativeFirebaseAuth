@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer } from "react";
 import {
-  createUserWithEmailAndPassword,
   onAuthStateChanged,
+  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth/react-native";
