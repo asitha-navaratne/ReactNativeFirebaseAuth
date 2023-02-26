@@ -30,7 +30,6 @@ const SignUpScreen = () => {
       alertErrorMessage("Passwords should match!");
     } else {
       handleSignUp(user).catch((err) => {
-        console.log(err.code);
         if (err.code === "auth/invalid-email") {
           alertErrorMessage("Invalid email address format!");
         } else if (err.code === "auth/email-already-exists") {
