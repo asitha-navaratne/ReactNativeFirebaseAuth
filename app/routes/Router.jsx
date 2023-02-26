@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import LoadingScreen from "../screens/appScreens/LoadingScreen";
 import HomeScreen from "../screens/appScreens/HomeScreen";
 import WelcomeScreen from "../screens/appScreens/WelcomeScreen";
 import SignInScreen from "../screens/authScreens/SignInScreen";
@@ -13,17 +12,13 @@ import { useAuth } from "../contexts/AuthContext";
 const Stack = createNativeStackNavigator();
 
 const Router = () => {
-  const { isSignedIn, isLoading, setAuthListener } = useAuth();
+  const { isSignedIn, setAuthListener } = useAuth();
 
   useEffect(() => {
     const unsubscribe = setAuthListener();
 
     return unsubscribe;
   }, []);
-
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
 
   return (
     <NavigationContainer>

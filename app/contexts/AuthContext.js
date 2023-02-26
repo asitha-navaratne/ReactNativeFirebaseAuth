@@ -51,9 +51,9 @@ const AuthProvider = ({ children }) => {
   const handleSignIn = async function (email, password) {
     dispatch({ type: "LOADING_DATA" });
 
-    return signInWithEmailAndPassword(auth, email, password).catch((err) =>
-      alert(err.message)
-    );
+    return signInWithEmailAndPassword(auth, email, password).finally(() => {
+      dispatch({ type: "LOADING_COMPLETE" });
+    });
   };
 
   const handleSignUp = async function (user) {
@@ -69,15 +69,20 @@ const AuthProvider = ({ children }) => {
           firstName: user.firstName,
           lastName: user.lastName,
           phone: user.phone,
+          createdAt: new Date(Date.now()).toLocaleString(),
         });
       })
-      .catch((err) => alert(err.message));
+      .finally(() => {
+        dispatch({ type: "LOADING_COMPLETE" });
+      });
   };
 
   const handleSignOut = async function () {
     dispatch({ type: "LOADING_DATA" });
 
-    return signOut(auth).catch((err) => alert(err.message));
+    return signOut(auth).finally(() => {
+      dispatch({ type: "LOADING_COMPLETE" });
+    });
   };
 
   const context = {
