@@ -39,9 +39,7 @@ const AuthProvider = ({ children }) => {
       } catch (err) {
         alert(err.message);
       } finally {
-        if (state.isLoading) {
-          dispatch({ type: "LOADING_COMPLETE" });
-        }
+        dispatch({ type: "LOADING_COMPLETE" });
       }
     });
 
@@ -51,16 +49,14 @@ const AuthProvider = ({ children }) => {
   const handleSignIn = async function (email, password) {
     dispatch({ type: "LOADING_DATA" });
 
-    return signInWithEmailAndPassword(auth, email, password).finally(() => {
-      dispatch({ type: "LOADING_COMPLETE" });
-    });
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   const handleSignUp = async function (user) {
     dispatch({ type: "LOADING_DATA" });
 
-    return createUserWithEmailAndPassword(auth, user.email, user.password)
-      .then((userCredentials) => {
+    return createUserWithEmailAndPassword(auth, user.email, user.password).then(
+      (userCredentials) => {
         const newUser = userCredentials.user;
 
         return setDoc(doc(db, "users", newUser.uid), {
@@ -71,18 +67,14 @@ const AuthProvider = ({ children }) => {
           phone: user.phone,
           createdAt: new Date(Date.now()).toLocaleString(),
         });
-      })
-      .finally(() => {
-        dispatch({ type: "LOADING_COMPLETE" });
-      });
+      }
+    );
   };
 
   const handleSignOut = async function () {
     dispatch({ type: "LOADING_DATA" });
 
-    return signOut(auth).finally(() => {
-      dispatch({ type: "LOADING_COMPLETE" });
-    });
+    return signOut(auth);
   };
 
   const context = {

@@ -4,7 +4,7 @@ import { Button } from "react-native-paper";
 import { useAuth } from "../../contexts/AuthContext";
 
 const HomeScreen = () => {
-  const { authToken, handleSignOut, isLoading } = useAuth();
+  const { isLoading, authToken, handleSignOut } = useAuth();
 
   return (
     <>
